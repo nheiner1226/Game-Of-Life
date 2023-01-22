@@ -1,0 +1,232 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.awt.Dimension;
+
+//test comment
+// Extends pre-defined Frame class, therefore no need to create new Frame instance
+public class LifeView extends Frame implements ViewInterface, ActionListener {
+
+    // Declare text-based attributes
+
+    String description = "";
+    String name = "";
+
+
+    // Declare swing attributes
+
+    // Create new labels
+    Label inputPrompt = new Label();
+    Label inputPrompt2 = new Label();
+    Label inputPrompt3 = new Label();
+    Label inputPrompt4 = new Label();
+    Label inputPrompt5 = new Label();
+    Label inputPrompt6 = new Label();
+    Label inputPrompt7 = new Label();
+
+    Label outputDescription = new Label();
+    TextField numberField = new TextField();
+    TextField numberField2 = new TextField();
+    TextField numberField3 = new TextField();
+    TextField numberField4 = new TextField();
+    TextField numberField5 = new TextField();
+    TextField numberField6 = new TextField();
+    TextField numberField7 = new TextField();
+    //TextField outputField = new TextField();
+    Button okButton = new Button();
+    Button quitButton = new Button();
+    NumListener listener = null;
+    //LifeView viewFrame = this;
+    LifeView app = this;
+
+
+    // LifeView constructor
+    public LifeView()   {
+        setSize(new Dimension(1000, 200));
+        okButton.setLabel("Run");
+        quitButton.setLabel("Quit");
+        setLayout(new FlowLayout());
+        add(inputPrompt, null);
+        add(numberField, null);
+        add(inputPrompt2, null);
+        add(numberField2, null);
+        add(inputPrompt3, null);
+        add(numberField3, null);
+        add(inputPrompt4, null);
+        add(numberField4, null);
+        add(inputPrompt5, null);
+        add(numberField5, null);
+        add(inputPrompt6, null);
+        add(numberField6, null);
+        add(inputPrompt7, null);
+        add(numberField7, null);
+        add(okButton, null);
+        add(quitButton, null);
+        add(outputDescription, null);
+        //add(outputField, null);
+        okButton.addActionListener(this);
+        quitButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+                listener.quit();
+                app.dispose();
+            }
+        }
+        );
+    }
+
+
+    @Override
+    public void actionPerformed(ActionEvent ae) {
+
+        try {
+
+            // Converts inputs entered into TextFields into integers
+            int n = Integer.parseInt(numberField.getText());
+            int n2 = Integer.parseInt(numberField2.getText());
+            int n3 = Integer.parseInt(numberField3.getText());
+            int n4 = Integer.parseInt(numberField4.getText());
+            int n5 = Integer.parseInt(numberField5.getText());
+            int n6 = Integer.parseInt(numberField6.getText());
+            int n7 = Integer.parseInt(numberField7.getText());
+			System.out.println(" in view acation perf before call listener");
+			
+            listener.numberEntered(n, n2, n3, n4, n5, n6, n7);
+
+        }
+
+        catch (Exception e) {
+
+        }
+
+
+    }
+
+    @Override
+    public void displayBoard(Object obj, int numberRows, int numberCols) {
+		System.out.println("In view dispaly"); //ssh
+        // Create frame
+        JFrame newFrame = new JFrame("Game of Life");
+
+        // Close frame when window closed
+        newFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        // Set size
+        newFrame.setSize(1000,1000);
+		
+
+        // Create panels
+        JPanel newPanel = new JPanel();
+        JPanel buttonsPanel = new JPanel();
+		
+		//Create test label ssh 
+		Label testLbl = new Label("test label");
+		
+		//set the panel sizes
+		buttonsPanel.setPreferredSize(new Dimension(1000 ,100));
+		newPanel.setPreferredSize(new Dimension(1100,800));
+		
+		buttonsPanel.add(testLbl, null);
+		
+        // Create new button
+        Button quitButton = new Button("Quit 2nd frame");
+		buttonsPanel.add(quitButton);
+		quitButton.addActionListener (new ActionLister() {
+			public void actionPerformed(ActionEvent e) {
+				newFrame.dispose();
+			}
+		});
+		
+        // Add panel to frame
+		newFrame.add(buttonsPanel, BorderLayout.NORTH);
+        //SSH newFrame.add(newPanel);
+
+		newFrame.add(newPanel, BorderLayout.WEST);
+
+        newFrame.setVisible(true);
+
+
+
+        // Declare and initialize variables for live and dead cells
+        int alive = 0;
+        int dead = 0;
+
+        String objGameBoard[][] = (String[][]) obj;
+
+        // Outer loop to iterate through rows
+        for (int i = 0; i <= numberRows - 1; i++) {
+
+            // Inner loop to iterate through cols
+            for (int j = 0; j <= numberCols - 1; j++)  {
+
+                if (objGameBoard[i][j] == "O")   {
+                    alive++;
+                }
+
+                else if (objGameBoard[i][j] == " ")   {
+                    dead++;
+                }
+
+            }
+
+            System.out.println(java.util.Arrays.toString(objGameBoard[i]));
+        }
+
+        System.out.println(alive);
+        System.out.println(dead);
+
+
+    }
+
+    @Override
+    public void setInputPrompt(String prompt) {
+        inputPrompt.setText(prompt);
+    }
+
+    @Override
+    public void setInputPrompt2(String prompt) {
+        inputPrompt2.setText(prompt);
+    }
+
+    @Override
+    public void setInputPrompt3(String prompt) {
+        inputPrompt3.setText(prompt);
+    }
+
+    @Override
+    public void setInputPrompt4(String prompt) {
+        inputPrompt4.setText(prompt);
+    }
+
+    @Override
+    public void setInputPrompt5(String prompt) {
+        inputPrompt5.setText(prompt);
+    }
+
+    @Override
+    public void setInputPrompt6(String prompt) {
+        inputPrompt6.setText(prompt);
+    }
+
+    @Override
+    public void setInputPrompt7(String prompt) {
+        inputPrompt7.setText(prompt);
+    }
+
+    @Override
+    public void setOutputText(String description) {
+        this.description = description;
+    }
+
+    @Override
+    public void setListener(NumListener listener) {
+        this.listener = listener;
+    }
+
+    @Override
+    public void setWindowName(String name) {
+        setTitle(name);
+    }
+}

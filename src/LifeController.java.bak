@@ -1,0 +1,121 @@
+public class LifeController implements NumListener {
+
+    // Create private attributes for model and view components
+    private ModelInterface model;
+    private ViewInterface view;
+
+
+    // Arg constructor
+    public LifeController(ViewInterface view, ModelInterface model)   {
+
+
+        this.view = view;
+        this.model = model;
+
+        System.out.println("After model and view attributes");
+
+        // Call methods from view component
+        view.setWindowName(model.getWindowName());
+
+        System.out.println("After setWindowName call");
+
+
+        view.setInputPrompt("Enter the amount of rows: "); // 1
+        view.setInputPrompt2("Enter the amount of columns: "); // 2
+        view.setInputPrompt3("Enter the y for starting shape center coordinate: "); // 3
+        view.setInputPrompt4("Enter the x val for starting shape center coordinate: "); // 4
+        view.setInputPrompt5("Select the starting gameboard (1 - Glider, 2 - Beacon, 3 - Middle Weight Spaceship: "); // 5
+        view.setInputPrompt6("Enter the number of iterations: "); // 6
+        view.setInputPrompt7("Enter the number for sleep: (milliseconds) ");
+
+        //view.setOutputText("Result: ");
+
+        System.out.println("After input prompts");
+
+        //
+        view.setListener(this);
+
+        view.show();
+
+    }
+
+
+    // Pass values from view to model
+    @Override
+    public void numberEntered(int num, int num2, int num3, int num4, int num5, int num6, int num7) {
+		System.out.println(" before view display");
+		model.setNumber(num, num2, num3, num4, num5, num6, num7);
+        model.setInitialRowColValues(num, num2);
+		System.out.println(" before view display");
+        view.displayBoard(model.printBoard(num5), num, num2);
+		
+/* ssh
+        try {
+            // Sleep thread (milliseconds)
+            Thread.sleep(num7);
+        }
+
+        catch(InterruptedException e)  {
+            System.out.println("You encountered an InterruptedException.");
+        }
+
+
+        // For loop
+        for(int i = 0; i < num6; i++)    {
+            view.displayBoard(model.solve(), num, num2);
+
+            try {
+                // Sleep thread (milliseconds)
+                Thread.sleep(num7);
+            }
+
+            catch(InterruptedException e)  {
+                System.out.println("You encountered an InterruptedException.");
+            }
+
+        } */
+
+    }
+
+
+    @Override
+    public void quit() {
+        view = null;
+        model = null;
+        System.exit(0);
+    }
+
+
+    // Main method
+    public static void main(String args[]) {
+
+
+        // Music components
+        String musicPath = "C:\\Windows\\Media\\onestop.mid";
+
+        Music musicObj = new Music();
+        musicObj.playMusic(musicPath);
+
+
+        if (args.length < 2) {
+            System.out.println("Usage : java NumberProblemController " +
+                    "<ViewClassName> <ModelClassName>");
+            return;
+        }
+
+
+        try {
+
+            new LifeController(
+                    (ViewInterface)Class.forName(args[0]).getDeclaredConstructor().newInstance(),
+                    (ModelInterface)Class.forName(args[1]).getDeclaredConstructor().newInstance());
+        }
+
+        catch (Exception e) {
+            System.out.println("Invalid class name supplied");
+            e.printStackTrace();
+        }
+
+    }
+
+}
